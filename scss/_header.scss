@@ -1,0 +1,328 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--header-height); // 110px
+  padding: {
+    right: var(--global-side-space);
+    left: var(--global-side-space);
+  }
+  line-height: 1;
+  z-index: 99;
+
+  .header-infix {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 137.143rem; // 1920px
+
+    > * {
+      flex: 1;
+    }
+
+    nav {
+      flex-basis: auto;
+      justify-content: center;
+      ul {
+        width: 100%;
+        justify-content: center;
+        li {
+          font-size: 1.286rem;
+          margin: 0;
+          a {
+            padding: 1.111em 1.444em;
+          }
+        }
+      }
+    }
+  }
+
+  h1 {
+    width: 17.143rem;
+    height: 3.571rem;
+    background: {
+      image: image-path('logo-main.png');
+      repeat: no-repeat;
+      position-y: center;
+    }
+    font-size: 0;
+
+    a {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      color: transparent;
+    }
+  }
+
+  .global-tools {
+    display: flex;
+    justify-content: end;
+  }
+
+  ul {
+    display: flex;
+    align-items: center;
+
+    + ul {
+      margin-left: var(--header-group-gap);
+    }
+
+    li {
+      + li {
+        margin-left: var(--header-group-gap);
+      }
+      a {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  .account {
+    li {
+      position: relative;
+
+      &:not(:first-child)::before {
+        @include pseudo-before;
+        top: 50%;
+        left: calc(var(--header-group-gap) / -2);
+        width: 0.071rem;
+        height: 0.929em;
+        background-color: #c7c7c7;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  .tools {
+    .ico {
+      display: block;
+      width: var(--header-ico-size);
+      height: var(--header-ico-size);
+      background: {
+        image: image-path('ico-gnb-tools.png');
+        repeat: no-repeat;
+        position: 0 0;
+        size: 7.143rem 7.143rem;
+      }
+      &.calendar {
+        background-position-x: 0;
+      }
+      &.search {
+        background-position-x: -3.571rem;
+      }
+    }
+  }
+
+  .hamburger-menu {
+    $line-thickness: 0.143rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    align-self: center;
+    width: var(--header-ico-size);
+    height: calc(var(--header-ico-size) * 0.8666); // 26px
+    margin-left: var(--header-group-gap);
+    cursor: pointer;
+
+    div {
+      width: 70%;
+      height: $line-thickness;
+      background-color: $color-border-dark;
+      transition: {
+        duration: 200ms;
+        timing-function: ease-in-out;
+      }
+    }
+
+    .meat {
+      position: relative;
+      width: 100%;
+      transition: {
+        duration: 400ms;
+      }
+      &:before,
+      &:after {
+        @include pseudo-before;
+        top: 50%;
+        left: 50%;
+        width: 120%;
+        height: $line-thickness;
+        background-color: transparent;
+        transform: translate(-50%, -50%);
+        transition: {
+          property: transform;
+          duration: 0.25s;
+          timing-function: ease-in-out;
+        }
+      }
+    }
+
+    &:hover {
+      div {
+        width: 100%;
+        animation: {
+          name: burger-hover;
+          duration: 1s;
+          timing-function: ease-in-out;
+          delay: 200ms;
+          iteration-count: infinite;
+          direction: alternate;
+          fill-mode: forwards;
+        }
+      }
+      .meat {
+        animation: {
+          delay: 0s;
+        }
+      }
+    }
+
+    &.active {
+      div {
+        background-color: transparent;
+        animation: none;
+      }
+      .meat {
+        &:before {
+          background-color: $color-border-dark;
+          transform: translate(-50%, -50%) rotate(45deg);
+        }
+        &:after {
+          background-color: $color-border-dark;
+          transform: translate(-50%, -50%) rotate(-45deg);
+        }
+      }
+    }
+  }
+
+  // main
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &-bg-white {
+    background-color: #fff;
+    animation: {
+      name: slideInDown;
+      duration: 1s;
+      timing-function: $timing-function1;
+      fill-mode: both;
+    }
+  }
+
+  &.gnb-shown {
+    background-color: #fff;
+  }
+
+  &.page-bg-dark:not(.gnb-shown) {
+    h1 {
+      background-image: image-path('logo-main-white.png');
+    }
+    .account {
+      li {
+        color: #fff;
+        a {
+          color: #fff;
+        }
+      }
+    }
+    .tools {
+      .ico {
+        background-position-y: -3.571rem;
+      }
+    }
+    .hamburger-menu {
+      div {
+        background-color: #fff;
+      }
+    }
+  }
+
+  &.account-bar-blind {
+    .account {
+      li {
+        &::before {
+          background-color: $color-border-dark;
+        }
+      }
+    }
+  }
+}
+
+.intro-container {
+  .header {
+    justify-content: space-between;
+    height: 18.519vh;
+    padding-bottom: 8.333vh;
+
+    @media #{$small-height} {
+      height: var(--header-height);
+      padding-bottom: 0;
+    }
+  }
+}
+
+@media #{$xsmall + 'and' + $max-small-height} {
+  // gnb-container-mobile
+  .header {
+    .global-tools,
+    ul,
+    li {
+      height: 100%;
+    }
+    h1 {
+      width: 9.429rem;
+      height: 1.571rem;
+      background-size: 9.429rem auto;
+    }
+    .tools {
+      .ico {
+        display: block;
+        width: var(--header-ico-size);
+        height: var(--header-ico-size);
+        background: {
+          image: image-path('ico-gnb-tools.png');
+          repeat: no-repeat;
+          position: 0 0;
+          size: 4.762rem 4.762rem; // 66.666%
+        }
+        &.calendar {
+          background-position-x: 0;
+        }
+        &.search {
+          background-position-x: -2.381rem;
+        }
+      }
+    }
+
+    &.page-bg-dark:not(.gnb-shown) {
+      .tools {
+        .ico {
+          background-position-y: -2.381rem;
+        }
+      }
+    }
+  }
+
+  .intro-container {
+    .header {
+      height: var(--header-height);
+      padding-bottom: 0;
+    }
+    .gnb-container {
+      top: 0;
+    }
+  }
+}
